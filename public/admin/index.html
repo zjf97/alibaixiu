@@ -4,6 +4,7 @@
 </script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <title>Dashboard &laquo; Admin</title>
@@ -13,6 +14,7 @@
   <link rel="stylesheet" href="../assets/css/admin.css">
   <script src="../assets/vendors/nprogress/nprogress.js"></script>
 </head>
+
 <body>
   <script>NProgress.start()</script>
 
@@ -21,7 +23,7 @@
       <button class="btn btn-default navbar-btn fa fa-bars"></button>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="profile.html"><i class="fa fa-user"></i>个人中心</a></li>
-        <li><a href="login.html"><i class="fa fa-sign-out"></i>退出</a></li>
+        <li><a href="javascript:;" id="exit"><i class="fa fa-sign-out"></i>退出</a></li>
       </ul>
     </nav>
     <div class="container-fluid">
@@ -89,5 +91,26 @@
   <script src="../assets/vendors/jquery/jquery.js"></script>
   <script src="../assets/vendors/bootstrap/js/bootstrap.js"></script>
   <script>NProgress.done()</script>
+  <script>
+    $(function () {
+      $('#exit').on('click', function () {
+        var isConfirm = confirm('您真的要退出吗?')
+        if (isConfirm) {
+          $.ajax({
+            type: "post",
+            url: "/logout",
+            success: function (response) {
+              location.href = 'login.html'
+              console.log(response.message);
+            },
+            error: function (response) {
+              alert('退出失败')
+            }
+          })
+        }
+      })
+    })
+  </script>
 </body>
+
 </html>
