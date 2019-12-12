@@ -62,7 +62,7 @@ $('#modifyBox').on('submit', '#modifyForm', function () {
     var id = $(this).attr('data-id')
     // console.log(formData);
     // console.log(id);
-    
+
     $.ajax({
         type: "put",
         url: "/users/" + id,
@@ -72,7 +72,7 @@ $('#modifyBox').on('submit', '#modifyForm', function () {
         }
     });
     return false
-}) 
+})
 
 $('#tbodyBox').on('click', '.delete', function () {
     // alert($(this).attr('data-id'))
@@ -84,4 +84,50 @@ $('#tbodyBox').on('click', '.delete', function () {
             location.reload()
         }
     });
+})
+
+$('#selectAll').on('change', function () {
+    var status = $(this).prop('checked')
+    $('.checks').prop('checked', status)
+
+    if ($('.checks').filter(':checked').length == 0) {
+        $('#deletes').css({ 'display': 'none' })
+    } else {
+        $('#deletes').css({ 'display': 'block' })
+    }
+})
+
+$('#tbodyBox').on('change', '.checks', function () {
+    if ($('.checks').length == $('.checks').filter(':checked').length) {
+        $('#selectAll').prop('checked', true)
+    } else {
+        $('#selectAll').prop('checked', false)
+    }
+
+    if ($('.checks').filter(':checked').length == 0) {
+        $('#deletes').css({ 'display': 'none' })
+    } else {
+        $('#deletes').css({ 'display': 'block' })
+    }
+
+})
+
+$('#deletes').on('click', function () {
+    // console.log($('.checks').filter(':checked'))
+    var arr = []
+    $.each($('.checks').filter(':checked'), function (index, value) { 
+        //  console.log($(value).attr('data-id'));
+        arr.push($(value).attr('data-id'))
+    });
+    
+    console.log(arr.join('-'));
+    ids = arr.join('-')
+    $.ajax({
+        type: "delete",
+        url: "/users/" + ids,
+        success: function (response) {
+            location.reload()
+        }
+    });
+
 })
