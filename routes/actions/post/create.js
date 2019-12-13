@@ -2,6 +2,10 @@
 const { Post, validatePost } = require('../../../model/Post');
 
 module.exports = async (req, res) => {
+	// console.log(req.fields);
+	// console.log(req.session.userInfo);
+	// console.log(req.session);
+	
 	// 数据格式校验
 	const { error } = validatePost(req.fields);
 	// 格式不符合要求
