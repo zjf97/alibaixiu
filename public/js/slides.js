@@ -1,0 +1,56 @@
+$('#image').on('change', function () {
+    var file = this.files[0]
+    var formData = new FormData()
+    formData.append('image', file)
+    $.ajax({
+        type: "post",
+        url: "/upload",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // $('#image').val(response[0].image)
+            $('#upimg').val(response[0].image)
+            $('.thumbnail').prop('src', response[0].image).show()
+        }
+    });
+})
+
+$('#slidesForm').on('submit', function () {
+    var data = $(this).serialize()
+    console.log(data);
+    $.ajax({
+        type: "post",
+        url: "/slides",
+        data: data,
+        success: function (response) {
+            location.reload()
+        }
+    });
+
+    return false
+})
+
+$.ajax({
+    type: "get",
+    url: "/slides",
+    success: function (response) {
+        var html = template('slidesTpl', { data: response })
+        console.log(html);
+
+        $('#slidesBox').html(html)
+    }
+});
+
+$('#slidesBox').on('click', '.delete', function () {
+    if (confirm('您真的要删除这张轮播图吗？')) {
+        var id = $(this).attr('data-id')
+        $.ajax({
+            type: "delete",
+            url: "/slides/" + id,
+            success: function (response) {
+                location.reload()
+            }
+        });
+    }
+})
