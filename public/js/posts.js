@@ -64,3 +64,16 @@ $('#filterForm').on('submit', function () {
 
     return false
 })
+
+$('#postList').on('click', '#delete', function () {
+    if (confirm('您确定删除此文章吗？')) {
+        var id = $(this).attr('data-id')
+        $.ajax({
+            type: "delete",
+            url: "/posts/" + id,
+            success: function (response) {
+                location.reload()
+            }
+        });
+    }
+}) 

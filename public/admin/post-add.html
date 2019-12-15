@@ -1,5 +1,10 @@
+<script src="/login/status"></script>
+<script>
+  if (!isLogin) location.href = 'login.html'
+</script>
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <title>Add new post &laquo; Admin</title>
@@ -9,6 +14,7 @@
   <link rel="stylesheet" href="../assets/css/admin.css">
   <script src="../assets/vendors/nprogress/nprogress.js"></script>
 </head>
+
 <body>
   <script>NProgress.start()</script>
 
@@ -20,7 +26,7 @@
         <li><a href="login.html"><i class="fa fa-sign-out"></i>退出</a></li>
       </ul>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" id="parentBox">
       <div class="page-title">
         <h1>写文章</h1>
       </div>
@@ -36,14 +42,15 @@
           </div>
           <div class="form-group">
             <label for="content">内容</label>
-            <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10" placeholder="内容"></textarea>
+            <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10"
+              placeholder="内容"></textarea>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
             <label for="feature">文章封面</label>
             <!-- show when image chose -->
-            <img class="help-block thumbnail" style="display: none">
+            <img class="help-block thumbnail" style="display: none" id="pic">
             <input id="feature" class="form-control" name="feature" type="file">
             <input type="hidden" name="thumbnail" id="thumbnail">
           </div>
@@ -55,7 +62,7 @@
           </div>
           <div class="form-group">
             <label for="created">发布时间</label>
-            <input id="created" class="form-control" name="creatAt" type="datetime-local">
+            <input id="created" class="form-control" name="creatAt" type="date">
           </div>
           <div class="form-group">
             <label for="status">状态</label>
@@ -118,6 +125,57 @@
     <option value="{{$value._id}}">{{$value.title}}</option>
     {{/each}}
   </script>
+
+  <script type="text/html" id="modifyTpl">
+    <div class="page-title">
+      <h1>编辑文章</h1>
+    </div>
+    <form class="row" id="editPost" data-id="{{_id}}">
+      <div class="col-md-9">
+        <div class="form-group">
+          <label for="title">标题</label>
+          <input id="title" class="form-control input-lg" name="title" type="text" placeholder="文章标题" value="{{title}}">
+        </div>
+        <div class="form-group">
+          <label for="content">内容</label>
+          <textarea id="content" class="form-control input-lg" name="content" cols="30" rows="10"
+            placeholder="内容">{{content}}</textarea>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="feature">文章封面</label>
+          <!-- show when image chose -->
+          <img class="help-block thumbnail" style="display: {{thumbnail ? 'block' : 'none'}}" id="pic" {{thumbnail ? 'src=' + thumbnail : ''}}>
+          <input id="feature" class="form-control" name="feature" type="file">
+          <input type="hidden" name="thumbnail" id="thumbnail" value="{{thumbnail}}">
+        </div>
+        <div class="form-group">
+          <label for="category">所属分类</label>
+          <select id="category" class="form-control" name="category">
+            {{each categories}}
+            <option {{$value._id == category._id ? "selected" : ""}} value="{{$value._id}}">{{$value.title}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="created">发布时间</label>
+          <input id="created" class="form-control" name="creatAt" type="date" value={{createAt.split('T')[0]}}>
+        </div>
+        <div class="form-group">
+          <label for="status">状态</label>
+          <select id="status" class="form-control" name="state">
+            <option value="0" {{state == 0 ? "selected" : ""}}>草稿</option>
+            <option value="1" {{state == 1 ? "selected" : ""}}>已发布</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">保存</button>
+        </div>
+      </div>
+    </form>
+  </script>
   <script src="../js/post-add.js"></script>
 </body>
+
 </html>

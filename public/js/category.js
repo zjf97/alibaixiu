@@ -25,6 +25,11 @@ $.ajax({
     }
 });
 
+function formteDate(date) {
+    date = new Date(date)
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+}
+
 
 $('#classList').on('click', '.edit', function () {
     var id = $(this).attr('data-id')
@@ -53,14 +58,16 @@ $('#className').on('submit', '#editClass', function () {
 })
 
 $('#classList').on('click', '.delete', function () {
-    var id = $(this).attr('data-id')
-    $.ajax({
-        type: "delete",
-        url: "/categories/" + id,
-        success: function (response) {
-            location.reload()
-        }
-    });
+    if (confirm('您确定要删除吗?')) {
+        var id = $(this).attr('data-id')
+        $.ajax({
+            type: "delete",
+            url: "/categories/" + id,
+            success: function (response) {
+                location.reload()
+            }
+        });
+    }
 })
 
 $('#cheAll').on('change', function () {
@@ -85,19 +92,21 @@ $('#classList').on('change', 'input', function () {
     }
 })
 
-$('#deletes').on('click', function () { 
-    var arr = []
-    $.each($('#classList').find('input').filter(':checked'), function (index, value) { 
-         arr.push($(value).attr('data-id'))
-    });
-    var id = arr.join('-')
-    console.log(id);
-    
-    $.ajax({
-        type: "delete",
-        url: "/categories/" + id,
-        success: function (response) {
-            location.reload()
-        }
-    });
+$('#deletes').on('click', function () {
+    if (confirm('您确定要删除吗?')) {
+        var arr = []
+        $.each($('#classList').find('input').filter(':checked'), function (index, value) {
+            arr.push($(value).attr('data-id'))
+        });
+        var id = arr.join('-')
+        console.log(id);
+
+        $.ajax({
+            type: "delete",
+            url: "/categories/" + id,
+            success: function (response) {
+                location.reload()
+            }
+        });
+    }
 })
