@@ -68,7 +68,7 @@ if (id != -1) {
 }
 
 $('#parentBox').on('submit', '#editPost', function () {  
-    var id = $("#editPost").attr('data-id')
+    var id = $(this).attr('data-id')
     var data = $(this).serialize()
     $.ajax({
         type: "put",
