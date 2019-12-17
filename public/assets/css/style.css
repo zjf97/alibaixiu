@@ -1362,3 +1362,10 @@ img {
     display: none;
   }
 }
+
+.content-detail{
+  padding-top: 10px;
+  text-indent: 2em;
+  line-height: 35px;
+  font-size: 16px;
+}
